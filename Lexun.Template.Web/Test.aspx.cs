@@ -10,11 +10,7 @@ namespace Lexun.Template.Web
     {
         protected override bool NeedLogin()
         {
-            if (Request.HttpMethod.Equals(HttpMethod.Get))
-            {
-                return false;
-            }
-            return true;
+            return !Request.HttpMethod.Equals(HttpMethod.Get);
         }
 
         /// <summary>
