@@ -23,8 +23,8 @@ namespace Lexun.Template.Web.Utils
                 return userid == 0 ? 33316 : userid;
             }
         }
-        
-        protected void ProcessAllowOrigin()
+
+        private void ProcessAllowOrigin()
         {
             if (UCommon.IsDevelopment)
             {
@@ -68,9 +68,9 @@ namespace Lexun.Template.Web.Utils
         protected virtual void OutPut()
         {
             Response.ClearContent();
+            // 设置为驼峰命名
             var serializerSettings = new JsonSerializerSettings
             {
-                // 设置为驼峰命名
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
             Response.Write(JsonConvert.SerializeObject(WJson, serializerSettings));
@@ -81,8 +81,9 @@ namespace Lexun.Template.Web.Utils
         protected override void PageShow()
         {
             ProcessAllowOrigin();
-            if (!CheckLogin())
+            if (NeedLogin() && UserId <= 0)
             {
+                WJson.SetValue(false, HttpStatusCode.Unauthorized, "请登录");
                 OutPut();
                 return;
             }
@@ -90,12 +91,9 @@ namespace Lexun.Template.Web.Utils
             OutPut();
         }
 
-        protected virtual bool CheckLogin()
+        protected virtual bool NeedLogin()
         {
-            if (UserId > 0) return true;
-            WJson.Code = HttpStatusCode.Unauthorized;
-            WJson.Message = "请登录...";
-            return false;
+            return true;
         }
 
         protected bool IsBlackSelf()

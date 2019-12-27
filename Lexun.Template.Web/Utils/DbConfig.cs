@@ -4,12 +4,12 @@ namespace Lexun.Template.Web.Utils
 {
     public class DbConfig
     {
-        public static CDatabase GetDB()
+        public static CDatabase GetDb()
         {
             return new CDatabase("ActivityCenter_Act");
         }
 
-        public static CDatabase GetLxMsgDB()
+        public static CDatabase GetLxMsgDb()
         {
             return new CDatabase(CConn.LxFriends_Msg, true);
         }
